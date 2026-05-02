@@ -8,6 +8,13 @@
 
   <h1>Inventario</h1>
 
+  <!-- 🔗 NAVEGACIÓN -->
+  <a href="agotados.html">
+    <button>Ver productos agotados</button>
+  </a>
+
+  <hr>
+
   <!-- FORMULARIO -->
   <h2>Agregar producto</h2>
 
@@ -22,12 +29,21 @@
   <!-- TABLA -->
   <h2>Lista de productos</h2>
 
+  <!-- 🔍 BUSCADOR -->
+  <input 
+    type="text" 
+    id="buscador" 
+    placeholder="Buscar producto..." 
+    oninput="filtrarProductos()"
+  >
+
   <table border="1">
     <thead>
       <tr>
         <th>Nombre</th>
         <th>Precio</th>
         <th>Stock</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody id="tablaProductos"></tbody>

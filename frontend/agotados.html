@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Productos Agotados - Botica</title>
+</head>
+<body>
+
+  <h1>Productos Agotados</h1>
+
+  <a href="inventario.html">
+    <button>Volver a Inventario</button>
+  </a>
+
+  <hr>
+
+  <h2>Lista de productos agotados</h2>
+
+  <!-- 🔍 BUSCADOR -->
+  <input 
+    type="text" 
+    id="buscadorAgotados" 
+    placeholder="Buscar producto agotado..." 
+    oninput="filtrarAgotados()"
+  >
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tablaAgotados"></tbody>
+  </table>
+
+  <!-- JS -->
+  <script src="js/agotados.js"></script>
+
+</body>
+</html>
