@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ventas - Botica</title>
+</head>
+<body>
+
+  <h1>Ventas</h1>
+
+  <a href="index.html">
+    <button>Volver al menú</button>
+  </a>
+
+  <hr>
+
+  <div style="display: flex; gap: 40px;">
+
+    <!-- 🟢 LISTA DE PRODUCTOS -->
+    <div>
+      <h2>Productos</h2>
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="listaProductos"></tbody>
+      </table>
+    </div>
+
+    <!-- 🟢 CARRITO -->
+    <div>
+      <h2>Carrito</h2>
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th> <!-- 👈 IMPORTANTE -->
+          </tr>
+        </thead>
+        <tbody id="carrito"></tbody>
+      </table>
+
+      <h3>Total: S/ <span id="total">0</span></h3>
+
+      <button onclick="generarBoleta()">Generar boleta</button>
+    </div>
+
+  </div>
+
+  <!-- 🔥 jsPDF (OBLIGATORIO para PDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- TU JS -->
+  <script src="js/ventas.js"></script>
+
+</body>
+</html>
