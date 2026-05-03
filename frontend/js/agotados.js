@@ -1,4 +1,3 @@
-// 🔥 LISTA GLOBAL
 let productosAgotados = [];
 
 // CARGAR PRODUCTOS AGOTADOS

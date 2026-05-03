@@ -3,62 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <title>Ventas - Botica</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- 🔐 PROTECCIÓN -->
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "login.html";
+    }
+  </script>
 </head>
 <body>
 
-  <h1>Ventas</h1>
+  <div class="navbar">
+    <span class="logo">💊 Botica</span>
 
-  <a href="index.html">
-    <button>Volver al menú</button>
-  </a>
+    <a href="index.html">Inicio</a>
+    <a href="inventario.html">Inventario</a>
+    <a href="ventas.html" class="active">Ventas</a>
+    <a href="agotados.html">Agotados</a>
+    <a href="historial.html">Historial</a> 
 
-  <hr>
+    <div class="spacer"></div>
 
-  <div style="display: flex; gap: 40px;">
+    <button onclick="logout()">Cerrar sesión</button>
+  </div>
 
-    <!-- 🟢 LISTA DE PRODUCTOS -->
-    <div>
-      <h2>Productos</h2>
+  <!-- 📦 CONTENIDO -->
+  <div class="container">
 
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody id="listaProductos"></tbody>
-      </table>
-    </div>
+    <h1>Ventas</h1>
 
-    <!-- 🟢 CARRITO -->
-    <div>
-      <h2>Carrito</h2>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
 
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th>Acciones</th> <!-- 👈 IMPORTANTE -->
-          </tr>
-        </thead>
-        <tbody id="carrito"></tbody>
-      </table>
+      <!-- 🟢 PRODUCTOS -->
+      <div class="card" style="flex:1; min-width:300px;">
+        <h2>Productos</h2>
 
-      <h3>Total: S/ <span id="total">0</span></h3>
+        <!-- 🔍 BUSCADOR -->
+        <input 
+          id="buscadorVentas" 
+          placeholder="Buscar producto..." 
+          oninput="filtrarVentas()"
+          style="margin-bottom:10px;"
+        >
 
-      <button onclick="generarBoleta()">Generar boleta</button>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="listaProductos"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 🟢 CARRITO -->
+      <div class="card" style="flex:1; min-width:300px;">
+        <h2>Carrito</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="carrito"></tbody>
+          </table>
+        </div>
+
+        <h3>Total: S/ <span id="total">0</span></h3>
+
+        <button class="btn" onclick="generarBoleta()">Generar boleta</button>
+      </div>
+
     </div>
 
   </div>
 
-  <!-- 🔥 jsPDF (OBLIGATORIO para PDF) -->
+  <!-- 🔓 LOGOUT -->
+  <script>
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- 🔥 jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <!-- TU JS -->
+  <!-- JS -->
   <script src="js/ventas.js"></script>
 
 </body>

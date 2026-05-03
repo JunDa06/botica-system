@@ -3,21 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <title>Botica System</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- 🔐 PROTECCIÓN -->
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "login.html";
+    }
+  </script>
 </head>
 <body>
 
-  <h1>Botica System</h1>
-  <p>Sistema de gestión de inventario y ventas</p>
+  <div class="navbar">
+    <span class="logo">💊 Botica</span>
 
-  <hr>
+    <a href="index.html" class="active">Inicio</a>
+    <a href="inventario.html">Inventario</a>
+    <a href="ventas.html">Ventas</a>
+    <a href="agotados.html">Agotados</a>
+    <a href="historial.html">Historial</a> 
 
-  <h2>Menú principal</h2>
+    <div class="spacer"></div>
 
-  <ul>
-    <li><a href="inventario.html">📦 Inventario</a></li>
-    <li><a href="ventas.html">🛒 Ventas</a></li>
-    <li><a href="agotados.html">📉 Productos Agotados</a></li>
-  </ul>
+    <button onclick="logout()">Cerrar sesión</button>
+  </div>
+
+  <!-- 📦 CONTENIDO -->
+  <div class="container">
+
+    <h1>Botica System</h1>
+    <p>Sistema de gestión de inventario y ventas</p>
+
+    <div class="card">
+      <h2>Menú principal</h2>
+
+      <div class="menu-grid">
+
+        <a href="inventario.html" class="menu-card">
+          <span>📦</span>
+          <h3>Inventario</h3>
+          <p>Gestiona productos</p>
+        </a>
+
+        <a href="ventas.html" class="menu-card">
+          <span>🛒</span>
+          <h3>Ventas</h3>
+          <p>Realiza ventas</p>
+        </a>
+
+        <a href="agotados.html" class="menu-card">
+          <span>📉</span>
+          <h3>Agotados</h3>
+          <p>Reponer productos</p>
+        </a>
+
+        <a href="historial.html" class="menu-card">
+          <span>📊</span>
+          <h3>Historial</h3>
+          <p>Ver ventas realizadas</p>
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 🔓 LOGOUT -->
+  <script>
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    }
+  </script>
 
 </body>
 </html>

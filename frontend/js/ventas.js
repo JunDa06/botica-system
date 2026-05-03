@@ -1,27 +1,36 @@
-// 🔥 LISTAS
 let productos = [];
 let carrito = [];
 
-// CARGAR PRODUCTOS
+// ==========================
+// 📦 CARGAR PRODUCTOS
+// ==========================
 async function cargarProductos() {
   const res = await fetch("http://localhost:3000/productos");
   productos = await res.json();
 
-  mostrarProductos();
+  mostrarProductos(productos);
 }
 
-// MOSTRAR PRODUCTOS
-function mostrarProductos() {
+// ==========================
+// 🔍 MOSTRAR PRODUCTOS
+// ==========================
+function mostrarProductos(lista = productos) {
   const tabla = document.getElementById("listaProductos");
   tabla.innerHTML = "";
 
-  productos.forEach(p => {
+  lista.forEach(p => {
     const fila = `
       <tr>
         <td>${p.nombre}</td>
         <td>S/ ${p.precio}</td>
+        <td>${p.stock}</td>
         <td>
-          <button onclick="agregarAlCarrito(${p.id})">➕</button>
+          <button 
+            onclick="agregarAlCarrito(${p.id})"
+            ${p.stock === 0 ? "disabled" : ""}
+          >
+            ➕
+          </button>
         </td>
       </tr>
     `;
@@ -29,12 +38,33 @@ function mostrarProductos() {
   });
 }
 
-// AGREGAR AL CARRITO
+// ==========================
+// 🔍 BUSCADOR
+// ==========================
+function filtrarVentas() {
+  const texto = document.getElementById("buscadorVentas").value.toLowerCase();
+
+  const filtrados = productos.filter(p =>
+    p.nombre.toLowerCase().includes(texto)
+  );
+
+  mostrarProductos(filtrados);
+}
+
 function agregarAlCarrito(id) {
   const producto = productos.find(p => p.id === id);
   const existente = carrito.find(p => p.id === id);
 
+  if (producto.stock === 0) {
+    alert("Sin stock");
+    return;
+  }
+
   if (existente) {
+    if (existente.cantidad >= producto.stock) {
+      alert("No hay más stock disponible");
+      return;
+    }
     existente.cantidad++;
   } else {
     carrito.push({
@@ -46,7 +76,7 @@ function agregarAlCarrito(id) {
   mostrarCarrito();
 }
 
-// MOSTRAR CARRITO
+
 function mostrarCarrito() {
   const tabla = document.getElementById("carrito");
   tabla.innerHTML = "";
@@ -78,46 +108,76 @@ function mostrarCarrito() {
   document.getElementById("total").innerText = total.toFixed(2);
 }
 
-// CAMBIAR CANTIDAD
 function cambiarCantidad(id, cambio) {
   const producto = carrito.find(p => p.id === id);
+  const original = productos.find(p => p.id === id);
+
   if (!producto) return;
 
-  producto.cantidad += cambio;
+  const nuevaCantidad = producto.cantidad + cambio;
 
-  if (producto.cantidad <= 0) {
+  if (nuevaCantidad <= 0) {
     carrito = carrito.filter(p => p.id !== id);
+  } else if (nuevaCantidad > original.stock) {
+    alert("Stock insuficiente");
+    return;
+  } else {
+    producto.cantidad = nuevaCantidad;
   }
 
   mostrarCarrito();
 }
 
-// ELIMINAR PRODUCTO
+// ==========================
+// ❌ ELIMINAR
+// ==========================
 function eliminarDelCarrito(id) {
   carrito = carrito.filter(p => p.id !== id);
   mostrarCarrito();
 }
 
-// 🧾 GENERAR BOLETA PDF (PRO)
-function generarBoleta() {
+// ==========================
+// 🧾 GENERAR BOLETA 
+// ==========================
+async function generarBoleta() {
   if (carrito.length === 0) {
     alert("El carrito está vacío");
     return;
   }
 
-  // 🔥 pedir cliente
   const cliente = prompt("Ingrese el nombre del cliente:");
   if (!cliente) {
     alert("Debe ingresar un nombre");
     return;
   }
 
+  // 🔥 ENVIAR AL BACKEND (YA CON CLIENTE)
+  const res = await fetch("http://localhost:3000/ventas", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      productos: carrito,
+      cliente: cliente
+    })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.error);
+    return;
+  }
+
+  // ==========================
+  // 📄 GENERAR PDF
+  // ==========================
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
   let y = 10;
 
-  // 🏪 ENCABEZADO
   doc.setFontSize(16);
   doc.text("BOTICA SALUD TOTAL", 10, y);
 
@@ -130,7 +190,6 @@ function generarBoleta() {
 
   y += 8;
 
-  // 📅 FECHA Y CLIENTE
   const fecha = new Date().toLocaleString();
   doc.text(`Fecha: ${fecha}`, 10, y);
 
@@ -139,7 +198,6 @@ function generarBoleta() {
 
   y += 10;
 
-  // 📦 DETALLE
   doc.setFontSize(12);
   doc.text("DETALLE DE COMPRA", 10, y);
 
@@ -151,22 +209,25 @@ function generarBoleta() {
     y += 6;
   });
 
-  // 💰 TOTAL
   const total = carrito.reduce((sum, p) => sum + p.precio * p.cantidad, 0);
 
   y += 10;
   doc.setFontSize(13);
   doc.text(`TOTAL: S/ ${total.toFixed(2)}`, 10, y);
 
-  // 🙏 MENSAJE FINAL
   y += 10;
   doc.setFontSize(10);
-  doc.text("Gracias por su compra 🙌", 10, y);
-  doc.text("Vuelva pronto 😊", 10, y + 5);
+  doc.text("Gracias por su compra ", 10, y);
+  doc.text("Vuelva pronto ", 10, y + 5);
 
-  // 📄 GUARDAR
   doc.save("boleta.pdf");
+
+  // 🔄 LIMPIAR Y ACTUALIZAR
+  carrito = [];
+  mostrarCarrito();
+  cargarProductos();
+
+  alert("Venta realizada correctamente");
 }
 
-// cargar al abrir
 window.onload = cargarProductos;
