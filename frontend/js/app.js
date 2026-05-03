@@ -1,4 +1,3 @@
-// 🔥 LISTA GLOBAL PARA BUSCADOR
 let productos = [];
 
 // CARGAR PRODUCTOS
@@ -114,7 +113,6 @@ function activarEdicion(id) {
   document.getElementById(`btnGuardar-${id}`).style.display = "inline";
   document.getElementById(`btnCancelar-${id}`).style.display = "inline";
 
-  // 🔥 ocultar botón agotar
   document.getElementById(`btnAgotar-${id}`).style.display = "none";
 }
 
@@ -132,7 +130,6 @@ function cancelarEdicion(id, nombre, precio, stock) {
   document.getElementById(`btnGuardar-${id}`).style.display = "none";
   document.getElementById(`btnCancelar-${id}`).style.display = "none";
 
-  // 🔥 volver a mostrar botón agotar
   document.getElementById(`btnAgotar-${id}`).style.display = "inline";
 }
 

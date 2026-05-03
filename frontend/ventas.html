@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ventas - Botica</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- 🔐 PROTECCIÓN -->
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "login.html";
+    }
+  </script>
+</head>
+<body>
+
+  <div class="navbar">
+    <span class="logo">💊 Botica</span>
+
+    <a href="index.html">Inicio</a>
+    <a href="inventario.html">Inventario</a>
+    <a href="ventas.html" class="active">Ventas</a>
+    <a href="agotados.html">Agotados</a>
+    <a href="historial.html">Historial</a> 
+
+    <div class="spacer"></div>
+
+    <button onclick="logout()">Cerrar sesión</button>
+  </div>
+
+  <!-- 📦 CONTENIDO -->
+  <div class="container">
+
+    <h1>Ventas</h1>
+
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+
+      <!-- 🟢 PRODUCTOS -->
+      <div class="card" style="flex:1; min-width:300px;">
+        <h2>Productos</h2>
+
+        <!-- 🔍 BUSCADOR -->
+        <input 
+          id="buscadorVentas" 
+          placeholder="Buscar producto..." 
+          oninput="filtrarVentas()"
+          style="margin-bottom:10px;"
+        >
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="listaProductos"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 🟢 CARRITO -->
+      <div class="card" style="flex:1; min-width:300px;">
+        <h2>Carrito</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="carrito"></tbody>
+          </table>
+        </div>
+
+        <h3>Total: S/ <span id="total">0</span></h3>
+
+        <button class="btn" onclick="generarBoleta()">Generar boleta</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 🔓 LOGOUT -->
+  <script>
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- 🔥 jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- JS -->
+  <script src="js/ventas.js"></script>
+
+</body>
+</html>

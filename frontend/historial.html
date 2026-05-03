@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Productos Agotados - Botica</title>
+  <title>Historial de Ventas - Botica</title>
 
   <link rel="stylesheet" href="css/styles.css">
 
@@ -16,15 +16,14 @@
 </head>
 <body>
 
-
   <div class="navbar">
     <span class="logo">💊 Botica</span>
 
     <a href="index.html">Inicio</a>
     <a href="inventario.html">Inventario</a>
     <a href="ventas.html">Ventas</a>
-    <a href="agotados.html" class="active">Agotados</a>
-    <a href="historial.html">Historial</a> 
+    <a href="agotados.html">Agotados</a>
+    <a href="historial.html" class="active">Historial</a>
 
     <div class="spacer"></div>
 
@@ -34,28 +33,48 @@
   <!-- 📦 CONTENIDO -->
   <div class="container">
 
-    <h1>Productos Agotados</h1>
+    <h1>📊 Historial de Ventas</h1>
 
     <div class="card">
-      <h2>Lista de productos agotados</h2>
+      <h2>Lista de boletas</h2>
 
+      <!-- 🔍 BUSCADOR -->
       <input 
-        id="buscadorAgotados" 
-        placeholder="Buscar producto agotado..." 
-        oninput="filtrarAgotados()"
+        id="buscadorHistorial" 
+        placeholder="Buscar por cliente..." 
+        oninput="filtrarHistorial()"
       >
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Stock</th>
-              <th>Acciones</th>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Total</th>
+              <th>Fecha</th>
+              <th>Detalle</th>
             </tr>
           </thead>
-          <tbody id="tablaAgotados"></tbody>
+          <tbody id="tablaHistorial"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 📦 DETALLE -->
+    <div class="card">
+      <h2>Detalle de la boleta</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+            </tr>
+          </thead>
+          <tbody id="detalleBoleta"></tbody>
         </table>
       </div>
     </div>
@@ -71,7 +90,7 @@
   </script>
 
   <!-- JS -->
-  <script src="js/agotados.js"></script>
+  <script src="js/historial.js"></script>
 
 </body>
 </html>
